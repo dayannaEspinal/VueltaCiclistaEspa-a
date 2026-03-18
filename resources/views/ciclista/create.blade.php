@@ -8,7 +8,6 @@
 <body>
     <h1>Crear Ciclista</h1>
 
-   
     @if ($errors->any())
         <div style="color:red;">
             <ul>
@@ -19,16 +18,19 @@
         </div>
     @endif
 
-    <form action="/ciclista/guardar" method="POST">
+    <form action="/ciclista" method="POST">
         @csrf
+        <label>ID Equipo:</label><br>
+        <input type="number" name="id_equipo" required><br><br>
+
         <label>Nombre:</label><br>
-        <input type="text" name="Nombre" required maxlength="50"><br><br>
+        <input type="text" name="nombre" required maxlength="50"><br><br>
 
         <label>Nacionalidad:</label><br>
-        <input type="text" name="Nacionalidad" maxlength="50"><br><br>
+        <input type="text" name="nacionalidad" required maxlength="50"><br><br>
 
         <label>Fecha de Nacimiento:</label><br>
-        <input type="date" name="FechaNacimiento"><br><br>
+        <input type="date" name="fecha_nacimiento" required><br><br>
 
         <button type="submit">Guardar</button>
     </form>
