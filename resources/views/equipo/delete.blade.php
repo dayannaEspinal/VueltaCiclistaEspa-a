@@ -10,18 +10,18 @@
 
     @if(!$equipo)
         <p style="color:red;">Equipo no encontrado.</p>
-        <a href="/equipo">Volver a la lista</a>
+        <a href="{{ route('equipo.index') }}">Volver a la lista</a>
     @else
         <p>¿Esta seguro que desea eliminar al equipo <strong>{{ $equipo->nombre }}</strong>?</p>
 
-        <form action="/equipo/{{ $equipo->id }}" method="POST">
+        <form action="{{ route('equipo.destroy', $equipo->id) }}" method="POST">
             @csrf
             @method('DELETE')
-            <button type="submit">Si, eliminar</button>
+            <button type="submit">Sí, eliminar</button>
         </form>
 
         <br>
-        <a href="/equipo">Cancelar y volver a la lista</a>
+        <a href="{{ route('equipo.index') }}">Cancelar y volver a la lista</a>
     @endif
 </body>
 </html>
