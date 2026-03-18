@@ -8,20 +8,15 @@
 <body>
     <h1>Eliminar Ciclista</h1>
 
-    @php
-        
-        $id = request()->query('id');
-        $ciclista = \App\Models\Ciclista::find($id);
-    @endphp
-
     @if(!$ciclista)
         <p style="color:red;">Ciclista no encontrado.</p>
         <a href="/ciclista">Volver a la lista</a>
     @else
-        <p>¿Está seguro que desea eliminar al ciclista <strong>{{ $ciclista->Nombre }}</strong>?</p>
+        <p>¿Está seguro que desea eliminar al ciclista <strong>{{ $ciclista->nombre }}</strong>?</p>
 
-    
-        <form action="/ciclista/delet?id={{ $ciclista->IdCiclista }}" method="GET">
+        <form action="/ciclista/{{ $ciclista->id }}" method="POST">
+            @csrf
+            @method('DELETE')
             <button type="submit">Si, eliminar</button>
         </form>
 
