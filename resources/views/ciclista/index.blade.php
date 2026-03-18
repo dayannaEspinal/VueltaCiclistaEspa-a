@@ -8,18 +8,19 @@
 <body>
     <h1>Lista de Ciclistas</h1>
 
-    
     @if(session('success'))
         <p style="color:green;">{{ session('success') }}</p>
     @endif
+    @if(session('error'))
+        <p style="color:red;">{{ session('error') }}</p>
+    @endif
 
-    
     <a href="/ciclista/crear">Crear Nuevo Ciclista</a>
 
-    
     <table border="1" cellpadding="10" cellspacing="0">
         <tr>
             <th>ID</th>
+            <th>Equipo</th>
             <th>Nombre</th>
             <th>Nacionalidad</th>
             <th>Fecha Nacimiento</th>
@@ -27,13 +28,14 @@
         </tr>
         @foreach($ciclistas as $ciclista)
         <tr>
-            <td>{{ $ciclista->IdCiclista }}</td>
-            <td>{{ $ciclista->Nombre }}</td>
-            <td>{{ $ciclista->Nacionalidad }}</td>
-            <td>{{ $ciclista->FechaNacimiento }}</td>
+            <td>{{ $ciclista->id }}</td>
+            <td>{{ $ciclista->id_equipo }}</td>
+            <td>{{ $ciclista->nombre }}</td>
+            <td>{{ $ciclista->nacionalidad }}</td>
+            <td>{{ $ciclista->fecha_nacimiento }}</td>
             <td>
-                <a href="/ciclista/edit?id={{ $ciclista->IdCiclista }}">Editar</a> |
-                <a href="/ciclista/delet?id={{ $ciclista->IdCiclista }}" onclick="return confirm('¿Desea eliminar este ciclista?')">Eliminar</a>
+                <a href="/ciclista/edit/{{ $ciclista->id }}">Editar</a> |
+                <a href="/ciclista/eliminar/{{ $ciclista->id }}">Eliminar</a>
             </td>
         </tr>
         @endforeach
