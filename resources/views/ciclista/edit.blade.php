@@ -8,7 +8,6 @@
 <body>
     <h1>Editar Ciclista</h1>
 
-    
     @if ($errors->any())
         <div style="color:red;">
             <ul>
@@ -19,19 +18,21 @@
         </div>
     @endif
 
-    <form action="/ciclista/update" method="POST">
+    <form action="/ciclista/{{ $ciclista->id }}" method="POST">
         @csrf
-       
-        <input type="hidden" name="IdCiclista" value="{{ $ciclista->IdCiclista }}">
+        @method('PUT')
+
+        <label>ID Equipo:</label><br>
+        <input type="number" name="id_equipo" value="{{ $ciclista->id_equipo }}" required><br><br>
 
         <label>Nombre:</label><br>
-        <input type="text" name="Nombre" value="{{ $ciclista->Nombre }}" required maxlength="50"><br><br>
+        <input type="text" name="nombre" value="{{ $ciclista->nombre }}" required maxlength="50"><br><br>
 
         <label>Nacionalidad:</label><br>
-        <input type="text" name="Nacionalidad" value="{{ $ciclista->Nacionalidad }}" maxlength="50"><br><br>
+        <input type="text" name="nacionalidad" value="{{ $ciclista->nacionalidad }}" required maxlength="50"><br><br>
 
         <label>Fecha de Nacimiento:</label><br>
-        <input type="date" name="FechaNacimiento" value="{{ $ciclista->FechaNacimiento }}"><br><br>
+        <input type="date" name="fecha_nacimiento" value="{{ $ciclista->fecha_nacimiento }}" required><br><br>
 
         <button type="submit">Actualizar</button>
     </form>
