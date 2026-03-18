@@ -18,7 +18,7 @@
         </div>
     @endif
 
-    <form action="/ciclista" method="POST">
+    <form action="{{ route('ciclista.store') }}" method="POST">
         @csrf
         <label>ID Equipo:</label><br>
         <input type="number" name="id_equipo" required><br><br>
@@ -36,6 +36,6 @@
     </form>
 
     <br>
-    <a href="/ciclista">Volver a la lista</a>
+    <a href="{{ route('ciclista.index') }}">Volver a la lista</a>
 </body>
 </html>
