@@ -3,42 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista Ciclistas</title>
+    <title>Lista Ciclista</title>
 </head>
 <body>
-    <h1>Lista de Ciclistas</h1>
+    <h1>Lista Ciclista</h1>
 
     @if(session('success'))
-        <p style="color:green;">{{ session('success') }}</p>
+        <div>{{ session('success') }}</div>
     @endif
     @if(session('error'))
-        <p style="color:red;">{{ session('error') }}</p>
+        <div>{{ session('error') }}</div>
     @endif
 
-    <a href="/ciclista/crear">Crear Nuevo Ciclista</a>
+    <a href="{{ route('ciclista.create') }}">Crear Ciclista</a>
 
-    <table border="1" cellpadding="10" cellspacing="0">
-        <tr>
-            <th>ID</th>
-            <th>Equipo</th>
-            <th>Nombre</th>
-            <th>Nacionalidad</th>
-            <th>Fecha Nacimiento</th>
-            <th>Acciones</th>
-        </tr>
-        @foreach($ciclistas as $ciclista)
-        <tr>
-            <td>{{ $ciclista->id }}</td>
-            <td>{{ $ciclista->id_equipo }}</td>
-            <td>{{ $ciclista->nombre }}</td>
-            <td>{{ $ciclista->nacionalidad }}</td>
-            <td>{{ $ciclista->fecha_nacimiento }}</td>
-            <td>
-                <a href="/ciclista/edit/{{ $ciclista->id }}">Editar</a> |
-                <a href="/ciclista/eliminar/{{ $ciclista->id }}">Eliminar</a>
-            </td>
-        </tr>
-        @endforeach
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Equipo</th>
+                <th>Nombre</th>
+                <th>Nacionalidad</th>
+                <th>Fecha Nacimiento</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($ciclistas as $ciclista)
+                <tr>
+                    <td>{{ $ciclista->id }}</td>
+                    <td>{{ $ciclista->id_equipo }}</td>
+                    <td>{{ $ciclista->nombre }}</td>
+                    <td>{{ $ciclista->nacionalidad }}</td>
+                    <td>{{ $ciclista->fecha_nacimiento }}</td>
+                    <td>
+                        <a href="{{ route('ciclista.show', $ciclista->id) }}">Ver</a> |
+                        <a href="{{ route('ciclista.edit', $ciclista->id) }}">Editar</a> |
+                        <form action="{{ route('ciclista.destroy', $ciclista->id) }}" method="POST" style="display:inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
     </table>
 </body>
 </html>
