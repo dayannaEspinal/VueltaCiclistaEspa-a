@@ -18,7 +18,7 @@
         </div>
     @endif
 
-    <form action="/equipo/{{ $equipo->id }}" method="POST">
+    <form action="{{ route('equipo.update', $equipo->id) }}" method="POST">
         @csrf
         @method('PUT')
 
@@ -35,6 +35,6 @@
     </form>
 
     <br>
-    <a href="/equipo">Volver a la lista</a>
+    <a href="{{ route('equipo.index') }}">Volver a la lista</a>
 </body>
 </html>
