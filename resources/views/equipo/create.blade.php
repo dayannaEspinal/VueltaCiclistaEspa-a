@@ -18,7 +18,7 @@
         </div>
     @endif
 
-    <form action="/equipo" method="POST">
+    <form action="{{ route('equipo.store') }}" method="POST">
         @csrf
         <label>Nombre:</label><br>
         <input type="text" name="nombre" required maxlength="50"><br><br>
@@ -33,6 +33,6 @@
     </form>
 
     <br>
-    <a href="/equipo">Volver a la lista</a>
+    <a href="{{ route('equipo.index') }}">Volver a la lista</a>
 </body>
 </html>
