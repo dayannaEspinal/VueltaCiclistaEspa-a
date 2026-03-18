@@ -3,40 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Equipos</title>
+    <title>Lista Equipos</title>
 </head>
 <body>
-    <h1>Lista de Equipos</h1>
+    <h1>Lista Equipos</h1>
 
     @if(session('success'))
-        <p style="color:green;">{{ session('success') }}</p>
+        <div>{{ session('success') }}</div>
     @endif
     @if(session('error'))
-        <p style="color:red;">{{ session('error') }}</p>
+        <div>{{ session('error') }}</div>
     @endif
 
-    <a href="/equipo/crear">Crear Nuevo Equipo</a>
+    <a href="{{ route('equipo.create') }}">Crear Equipo</a>
 
-    <table border="1" cellpadding="10" cellspacing="0">
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Director</th>
-            <th>Nacionalidad</th>
-            <th>Acciones</th>
-        </tr>
-        @foreach($equipos as $equipo)
-        <tr>
-            <td>{{ $equipo->id }}</td>
-            <td>{{ $equipo->nombre }}</td>
-            <td>{{ $equipo->director }}</td>
-            <td>{{ $equipo->nacionalidad }}</td>
-            <td>
-                <a href="/equipo/edit/{{ $equipo->id }}">Editar</a> |
-                <a href="/equipo/eliminar/{{ $equipo->id }}">Eliminar</a>
-            </td>
-        </tr>
-        @endforeach
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Director</th>
+                <th>Nacionalidad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($equipos as $equipo)
+                <tr>
+                    <td>{{ $equipo->id }}</td>
+                    <td>{{ $equipo->nombre }}</td>
+                    <td>{{ $equipo->director }}</td>
+                    <td>{{ $equipo->nacionalidad }}</td>
+                    <td>
+                        <a href="{{ route('equipo.show', $equipo->id) }}">Ver</a> |
+                        <a href="{{ route('equipo.edit', $equipo->id) }}">Editar</a> |
+                        <form action="{{ route('equipo.destroy', $equipo->id) }}" method="POST" style="display:inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
     </table>
 </body>
 </html>
