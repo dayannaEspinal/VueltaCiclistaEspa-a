@@ -112,30 +112,12 @@ class PruebaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+      public function destroy(string $id)
     {
-        $prueba = Prueba::find($id);
+        
+        $eliminado=Prueba::find($id);
+        $eliminado->delete();
 
-        if (!$prueba) {
-            return redirect('/prueba')->with('error', 'Prueba no encontrada.');
-        }
-
-        $prueba->delete();
-
-        return redirect('/prueba')->with('success', 'Prueba eliminada correctamente.');
-    }
-
-    /**
-     * Confirmación de eliminación.
-     */
-    public function eliminar(string $id)
-    {
-        $prueba = Prueba::find($id);
-
-        if (!$prueba) {
-            return redirect('/prueba')->with('error', 'Prueba no encontrada.');
-        }
-
-        return view('prueba.delete')->with('prueba', $prueba);
+        return redirect('/prueba');
     }
 }

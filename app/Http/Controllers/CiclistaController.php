@@ -104,30 +104,14 @@ class CiclistaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+     public function destroy(string $id)
     {
-        $ciclista = Ciclista::find($id);
+        //
+        $eliminado=Ciclista::find($id);
+        $eliminado->delete();
 
-        if (!$ciclista) {
-            return redirect('/ciclista')->with('error', 'Ciclista no encontrado.');
-        }
-
-        $ciclista->delete();
-
-        return redirect('/ciclista')->with('success', 'Ciclista eliminado correctamente.');
+        return redirect('/ciclista');
     }
 
-    /**
-     * Confirmación de eliminación.
-     */
-    public function eliminar(string $id)
-    {
-        $ciclista = Ciclista::find($id);
-
-        if (!$ciclista) {
-            return redirect('/ciclista')->with('error', 'Ciclista no encontrado.');
-        }
-
-        return view('ciclista.delete')->with('ciclista', $ciclista);
-    }
+  
 }

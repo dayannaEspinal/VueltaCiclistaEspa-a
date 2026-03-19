@@ -102,28 +102,11 @@ class EquipoController extends Controller
      */
     public function destroy(string $id)
     {
-        $equipo = Equipo::find($id);
+        
+        $eliminado=Equipo::find($id);
+        $eliminado->delete();
 
-        if (!$equipo) {
-            return redirect('/equipo')->with('error', 'Equipo no encontrado.');
-        }
-
-        $equipo->delete();
-
-        return redirect('/equipo')->with('success', 'Equipo eliminado correctamente.');
+        return redirect('/equipo');
     }
 
-    /**
-     * Confirmación de eliminación.
-     */
-    public function eliminar(string $id)
-    {
-        $equipo = Equipo::find($id);
-
-        if (!$equipo) {
-            return redirect('/equipo')->with('error', 'Equipo no encontrado.');
-        }
-
-        return view('equipo.delete')->with('equipo', $equipo);
-    }
 }
