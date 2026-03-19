@@ -14,7 +14,7 @@
     @else
         <p>¿Esta seguro que desea eliminar al equipo <strong>{{ $equipo->nombre }}</strong>?</p>
 
-        <form action="{{ route('equipo.destroy', $equipo->id) }}" method="POST">
+        <form action="{{ route('equipo.destroy', $equipo->id_equipo) }}" method="POST">
             @csrf
             @method('DELETE')
             <button type="submit">Sí, eliminar</button>

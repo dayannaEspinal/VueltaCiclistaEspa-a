@@ -41,7 +41,7 @@ class EquipoController extends Controller
         $equipo->nacionalidad = $request->nacionalidad;
         $equipo->save();
 
-        return redirect('/equipo')->with('success', 'Equipo creado correctamente.');
+        return redirect()->route('equipo.index')->with('success', 'Equipo creado correctamente.');
     }
 
     /**
@@ -52,7 +52,7 @@ class EquipoController extends Controller
         $equipo = Equipo::find($id);
 
         if (!$equipo) {
-            return redirect('/equipo')->with('error', 'Equipo no encontrado.');
+            return redirect()->route('equipo.index')->with('error', 'Equipo no encontrado.');
         }
 
         return view('equipo.show')->with('equipo', $equipo);
@@ -66,7 +66,7 @@ class EquipoController extends Controller
         $equipo = Equipo::find($id);
 
         if (!$equipo) {
-            return redirect('/equipo')->with('error', 'Equipo no encontrado.');
+            return redirect()->route('equipo.index')->with('error', 'Equipo no encontrado.');
         }
 
         return view('equipo.edit')->with('equipo', $equipo);
@@ -86,7 +86,7 @@ class EquipoController extends Controller
         $equipo = Equipo::find($id);
 
         if (!$equipo) {
-            return redirect('/equipo')->with('error', 'Equipo no encontrado.');
+            return redirect()->route('equipo.index')->with('error', 'Equipo no encontrado.');
         }
 
         $equipo->nombre = $request->nombre;
@@ -94,7 +94,7 @@ class EquipoController extends Controller
         $equipo->nacionalidad = $request->nacionalidad;
         $equipo->save();
 
-        return redirect('/equipo')->with('success', 'Equipo actualizado correctamente.');
+        return redirect()->route('equipo.index')->with('success', 'Equipo actualizado correctamente.');
     }
 
     /**
@@ -102,11 +102,15 @@ class EquipoController extends Controller
      */
     public function destroy(string $id)
     {
-        
-        $eliminado=Equipo::find($id);
+        $eliminado = Equipo::find($id);
+
+        if (!$eliminado) {
+            return redirect()->route('equipo.index')->with('error', 'Equipo no encontrado.');
+        }
+
         $eliminado->delete();
 
-        return redirect('/equipo');
+        return redirect()->route('equipo.index')->with('success', 'Equipo eliminado correctamente.');
     }
 
 }

@@ -43,7 +43,7 @@ class CiclistaController extends Controller
         $ciclista->fecha_nacimiento = $request->fecha_nacimiento;
         $ciclista->save();
 
-        return redirect('/ciclista')->with('success', 'Ciclista creado correctamente.');
+        return redirect()->route('ciclista.index')->with('success', 'Ciclista creado correctamente.');
     }
 
     /**
@@ -54,7 +54,7 @@ class CiclistaController extends Controller
         $ciclista = Ciclista::find($id);
 
         if (!$ciclista) {
-            return redirect('/ciclista')->with('error', 'Ciclista no encontrado.');
+            return redirect()->route('ciclista.index')->with('error', 'Ciclista no encontrado.');
         }
 
         return view('ciclista.show')->with('ciclista', $ciclista);
@@ -68,7 +68,7 @@ class CiclistaController extends Controller
         $ciclista = Ciclista::find($id);
 
         if (!$ciclista) {
-            return redirect('/ciclista')->with('error', 'Ciclista no encontrado.');
+            return redirect()->route('ciclista.index')->with('error', 'Ciclista no encontrado.');
         }
 
         return view('ciclista.edit')->with('ciclista', $ciclista);
@@ -89,7 +89,7 @@ class CiclistaController extends Controller
         $ciclista = Ciclista::find($id);
 
         if (!$ciclista) {
-            return redirect('/ciclista')->with('error', 'Ciclista no encontrado.');
+            return redirect()->route('ciclista.index')->with('error', 'Ciclista no encontrado.');
         }
 
         $ciclista->id_equipo = $request->id_equipo;
@@ -98,19 +98,23 @@ class CiclistaController extends Controller
         $ciclista->fecha_nacimiento = $request->fecha_nacimiento;
         $ciclista->save();
 
-        return redirect('/ciclista')->with('success', 'Ciclista actualizado correctamente.');
+        return redirect()->route('ciclista.index')->with('success', 'Ciclista actualizado correctamente.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-     public function destroy(string $id)
+    public function destroy(string $id)
     {
-        //
-        $eliminado=Ciclista::find($id);
+        $eliminado = Ciclista::find($id);
+
+        if (!$eliminado) {
+            return redirect()->route('ciclista.index')->with('error', 'Ciclista no encontrado.');
+        }
+
         $eliminado->delete();
 
-        return redirect('/ciclista');
+        return redirect()->route('ciclista.index')->with('success', 'Ciclista eliminado correctamente.');
     }
 
   

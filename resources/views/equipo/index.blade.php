@@ -30,14 +30,14 @@
         <tbody>
             @foreach($equipos as $equipo)
                 <tr>
-                    <td>{{ $equipo->id }}</td>
+                    <td>{{ $equipo->id_equipo }}</td>
                     <td>{{ $equipo->nombre }}</td>
                     <td>{{ $equipo->director }}</td>
                     <td>{{ $equipo->nacionalidad }}</td>
                     <td>
-                        <a href="{{ route('equipo.show', $equipo->id) }}">Ver</a> |
-                        <a href="{{ route('equipo.edit', $equipo->id) }}">Editar</a> |
-                        <form action="{{ route('equipo.destroy', $equipo->id) }}" method="POST" style="display:inline">
+                        <a href="{{ route('equipo.show', $equipo->id_equipo) }}">Ver</a> |
+                        <a href="{{ route('equipo.edit', $equipo->id_equipo) }}">Editar</a> |
+                        <form action="{{ route('equipo.destroy', $equipo->id_equipo) }}" method="POST" style="display:inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit">Eliminar</button>

@@ -8,4 +8,11 @@ class Ciclista extends Model
 {
     protected $table = 'ciclistas';
     protected $primaryKey = 'id_ciclistas';
+
+    protected $fillable = [
+        'id_equipo',
+        'nombre',
+        'nacionalidad',
+        'fecha_nacimiento',
+    ];
 }

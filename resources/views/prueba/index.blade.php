@@ -43,7 +43,11 @@
                     <td>
                         <a href="{{ route('prueba.show', $prueba->id) }}">Ver</a> |
                         <a href="{{ route('prueba.edit', $prueba->id) }}">Editar</a> |
-                        <a href="{{ route('prueba.eliminar', $prueba->id) }}">Eliminar</a>
+                        <form action="{{ route('prueba.destroy', $prueba->id) }}" method="POST" style="display:inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Eliminar</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach

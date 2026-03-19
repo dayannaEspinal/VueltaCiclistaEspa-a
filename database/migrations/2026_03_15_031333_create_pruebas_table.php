@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('pruebas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre',50);
-            $table->string('ciclista_ganardor',50);
+            $table->string('ciclista_ganador',50);
             $table->string('clasificacion_final',50);
             $table->integer('numero_etapas');
-            $table->date('año_edicion');
+            $table->integer('anio_edicion');
             $table->integer('km_totales');
             $table->timestamps();
         });

@@ -31,15 +31,15 @@
         <tbody>
             @foreach($ciclistas as $ciclista)
                 <tr>
-                    <td>{{ $ciclista->id }}</td>
+                    <td>{{ $ciclista->id_ciclistas }}</td>
                     <td>{{ $ciclista->id_equipo }}</td>
                     <td>{{ $ciclista->nombre }}</td>
                     <td>{{ $ciclista->nacionalidad }}</td>
                     <td>{{ $ciclista->fecha_nacimiento }}</td>
                     <td>
-                        <a href="{{ route('ciclista.show', $ciclista->id) }}">Ver</a> |
-                        <a href="{{ route('ciclista.edit', $ciclista->id) }}">Editar</a> |
-                        <form action="{{ route('ciclista.destroy', $ciclista->id) }}" method="POST" style="display:inline">
+                        <a href="{{ route('ciclista.show', $ciclista->id_ciclistas) }}">Ver</a> |
+                        <a href="{{ route('ciclista.edit', $ciclista->id_ciclistas) }}">Editar</a> |
+                        <form action="{{ route('ciclista.destroy', $ciclista->id_ciclistas) }}" method="POST" style="display:inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit">Eliminar</button>

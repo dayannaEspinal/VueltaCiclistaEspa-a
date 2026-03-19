@@ -29,8 +29,7 @@
         <label>Clasificación Final:</label><br>
         <input type="text" name="clasificacion_final" required maxlength="50"><br><br>
 
-        <label>Nú
-            Numero de Etapas:</label><br>
+        <label>Numero de Etapas:</label><br>
         <input type="number" name="numero_etapas" required><br><br>
 
         <label>Año Edición:</label><br>

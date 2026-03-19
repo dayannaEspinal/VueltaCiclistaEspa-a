@@ -34,7 +34,7 @@ class PruebaController extends Controller
             'ciclista_ganador' => 'required|string|max:50',
             'clasificacion_final' => 'required|string|max:50',
             'numero_etapas' => 'required|integer',
-            'anio_edicion' => 'required',
+            'anio_edicion' => 'required|integer|min:1900|max:2100',
             'km_totales' => 'required|integer',
         ]);
 
@@ -47,7 +47,7 @@ class PruebaController extends Controller
         $prueba->km_totales = $request->km_totales;
         $prueba->save();
 
-        return redirect('/prueba')->with('success', 'Prueba creada correctamente.');
+        return redirect()->route('prueba.index')->with('success', 'Prueba creada correctamente.');
     }
 
     /**
@@ -58,7 +58,7 @@ class PruebaController extends Controller
         $prueba = Prueba::find($id);
 
         if (!$prueba) {
-            return redirect('/prueba')->with('error', 'Prueba no encontrada.');
+            return redirect()->route('prueba.index')->with('error', 'Prueba no encontrada.');
         }
 
         return view('prueba.show')->with('prueba', $prueba);
@@ -72,7 +72,7 @@ class PruebaController extends Controller
         $prueba = Prueba::find($id);
 
         if (!$prueba) {
-            return redirect('/prueba')->with('error', 'Prueba no encontrada.');
+            return redirect()->route('prueba.index')->with('error', 'Prueba no encontrada.');
         }
 
         return view('prueba.edit')->with('prueba', $prueba);
@@ -88,14 +88,14 @@ class PruebaController extends Controller
             'ciclista_ganador' => 'required|string|max:50',
             'clasificacion_final' => 'required|string|max:50',
             'numero_etapas' => 'required|integer',
-            'anio_edicion' => 'required',
+            'anio_edicion' => 'required|integer|min:1900|max:2100',
             'km_totales' => 'required|integer',
         ]);
 
         $prueba = Prueba::find($id);
 
         if (!$prueba) {
-            return redirect('/prueba')->with('error', 'Prueba no encontrada.');
+            return redirect()->route('prueba.index')->with('error', 'Prueba no encontrada.');
         }
 
         $prueba->nombre = $request->nombre;
@@ -106,18 +106,22 @@ class PruebaController extends Controller
         $prueba->km_totales = $request->km_totales;
         $prueba->save();
 
-        return redirect('/prueba')->with('success', 'Prueba actualizada correctamente.');
+        return redirect()->route('prueba.index')->with('success', 'Prueba actualizada correctamente.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-      public function destroy(string $id)
+    public function destroy(string $id)
     {
-        
-        $eliminado=Prueba::find($id);
+        $eliminado = Prueba::find($id);
+
+        if (!$eliminado) {
+            return redirect()->route('prueba.index')->with('error', 'Prueba no encontrada.');
+        }
+
         $eliminado->delete();
 
-        return redirect('/prueba');
+        return redirect()->route('prueba.index')->with('success', 'Prueba eliminada correctamente.');
     }
 }

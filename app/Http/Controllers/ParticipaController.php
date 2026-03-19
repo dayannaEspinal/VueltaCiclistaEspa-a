@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Participa;
 use Illuminate\Http\Request;
 
 class ParticipaController extends Controller
@@ -11,7 +12,8 @@ class ParticipaController extends Controller
      */
     public function index()
     {
-        //
+        $listaParticipas = Participa::all();
+        return view('participa.index')->with('participas', $listaParticipas);
     }
 
     /**
@@ -19,7 +21,7 @@ class ParticipaController extends Controller
      */
     public function create()
     {
-        //
+        return view('participa.create');
     }
 
     /**
@@ -27,7 +29,21 @@ class ParticipaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'id_equipo' => 'required|integer',
+            'id_prueba' => 'required|integer',
+            'fecha_inicio' => 'required|date',
+            'fin_contrato' => 'required|date|after_or_equal:fecha_inicio',
+        ]);
+
+        $participa = new Participa();
+        $participa->id_equipo = $request->id_equipo;
+        $participa->id_prueba = $request->id_prueba;
+        $participa->fecha_inicio = $request->fecha_inicio;
+        $participa->fin_contrato = $request->fin_contrato;
+        $participa->save();
+
+        return redirect()->route('participa.index')->with('success', 'Participacion creada correctamente.');
     }
 
     /**
@@ -35,7 +51,13 @@ class ParticipaController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $participa = Participa::find($id);
+
+        if (!$participa) {
+            return redirect()->route('participa.index')->with('error', 'Participacion no encontrada.');
+        }
+
+        return view('participa.show')->with('participa', $participa);
     }
 
     /**
@@ -43,7 +65,13 @@ class ParticipaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $participa = Participa::find($id);
+
+        if (!$participa) {
+            return redirect()->route('participa.index')->with('error', 'Participacion no encontrada.');
+        }
+
+        return view('participa.edit')->with('participa', $participa);
     }
 
     /**
@@ -51,7 +79,26 @@ class ParticipaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'id_equipo' => 'required|integer',
+            'id_prueba' => 'required|integer',
+            'fecha_inicio' => 'required|date',
+            'fin_contrato' => 'required|date|after_or_equal:fecha_inicio',
+        ]);
+
+        $participa = Participa::find($id);
+
+        if (!$participa) {
+            return redirect()->route('participa.index')->with('error', 'Participacion no encontrada.');
+        }
+
+        $participa->id_equipo = $request->id_equipo;
+        $participa->id_prueba = $request->id_prueba;
+        $participa->fecha_inicio = $request->fecha_inicio;
+        $participa->fin_contrato = $request->fin_contrato;
+        $participa->save();
+
+        return redirect()->route('participa.index')->with('success', 'Participacion actualizada correctamente.');
     }
 
     /**
@@ -59,6 +106,14 @@ class ParticipaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $participa = Participa::find($id);
+
+        if (!$participa) {
+            return redirect()->route('participa.index')->with('error', 'Participacion no encontrada.');
+        }
+
+        $participa->delete();
+
+        return redirect()->route('participa.index')->with('success', 'Participacion eliminada correctamente.');
     }
 }

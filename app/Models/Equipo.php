@@ -8,4 +8,10 @@ class Equipo extends Model
 {
     protected $table = 'equipos';
     protected $primaryKey = 'id_equipo';
+
+    protected $fillable = [
+        'nombre',
+        'director',
+        'nacionalidad',
+    ];
 }

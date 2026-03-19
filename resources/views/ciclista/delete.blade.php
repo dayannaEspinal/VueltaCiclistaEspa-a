@@ -14,7 +14,7 @@
     @else
         <p>¿Está seguro que desea eliminar al ciclista <strong>{{ $ciclista->nombre }}</strong>?</p>
 
-        <form action="{{ route('ciclista.destroy', $ciclista->id) }}" method="POST">
+        <form action="{{ route('ciclista.destroy', $ciclista->id_ciclistas) }}" method="POST">
             @csrf
             @method('DELETE')
             <button type="submit">Sí, eliminar</button>
