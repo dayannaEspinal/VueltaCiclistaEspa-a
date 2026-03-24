@@ -3,53 +3,50 @@
 namespace App\Http\Controllers;
 
 use App\Models\Equipo;
+use App\Models\Nacionalidad;
 use Illuminate\Http\Request;
 
 class EquipoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    /* comentario en espanol */
     public function index()
     {
-        $listaEquipos = Equipo::all();
+        $listaEquipos = Equipo::with('nacionalidad')->orderBy('nombre')->get();
         return view('equipo.index')->with('equipos', $listaEquipos);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    /* comentario en espanol */
     public function create()
     {
-        return view('equipo.create');
+        $nacionalidades = Nacionalidad::orderBy('nombre')->get();
+
+        return view('equipo.create', compact('nacionalidades'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    /* comentario en espanol */
     public function store(Request $request)
     {
         $request->validate([
             'nombre' => 'required|string|max:50',
             'director' => 'required|string|max:50',
-            'nacionalidad' => 'required|string|max:50',
+            'id_nacionalidad' => 'required|exists:nacionalidades,id_nacionalidad',
+            'estado' => 'required|in:activo,inactivo',
         ]);
 
         $equipo = new Equipo();
         $equipo->nombre = $request->nombre;
         $equipo->director = $request->director;
-        $equipo->nacionalidad = $request->nacionalidad;
+        $equipo->id_nacionalidad = $request->id_nacionalidad;
+        $equipo->estado = $request->estado;
         $equipo->save();
 
         return redirect()->route('equipo.index')->with('success', 'Equipo creado correctamente.');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    /* comentario en espanol */
     public function show(string $id)
     {
-        $equipo = Equipo::find($id);
+        $equipo = Equipo::with(['nacionalidad', 'ciclistas.nacionalidad'])->find($id);
 
         if (!$equipo) {
             return redirect()->route('equipo.index')->with('error', 'Equipo no encontrado.');
@@ -58,29 +55,27 @@ class EquipoController extends Controller
         return view('equipo.show')->with('equipo', $equipo);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    /* comentario en espanol */
     public function edit(string $id)
     {
         $equipo = Equipo::find($id);
+        $nacionalidades = Nacionalidad::orderBy('nombre')->get();
 
         if (!$equipo) {
             return redirect()->route('equipo.index')->with('error', 'Equipo no encontrado.');
         }
 
-        return view('equipo.edit')->with('equipo', $equipo);
+        return view('equipo.edit', compact('equipo', 'nacionalidades'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    /* comentario en espanol */
     public function update(Request $request, string $id)
     {
         $request->validate([
             'nombre' => 'required|string|max:50',
             'director' => 'required|string|max:50',
-            'nacionalidad' => 'required|string|max:50',
+            'id_nacionalidad' => 'required|exists:nacionalidades,id_nacionalidad',
+            'estado' => 'required|in:activo,inactivo',
         ]);
 
         $equipo = Equipo::find($id);
@@ -91,15 +86,14 @@ class EquipoController extends Controller
 
         $equipo->nombre = $request->nombre;
         $equipo->director = $request->director;
-        $equipo->nacionalidad = $request->nacionalidad;
+        $equipo->id_nacionalidad = $request->id_nacionalidad;
+        $equipo->estado = $request->estado;
         $equipo->save();
 
         return redirect()->route('equipo.index')->with('success', 'Equipo actualizado correctamente.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    /* comentario en espanol */
     public function destroy(string $id)
     {
         $eliminado = Equipo::find($id);
@@ -108,9 +102,10 @@ class EquipoController extends Controller
             return redirect()->route('equipo.index')->with('error', 'Equipo no encontrado.');
         }
 
-        $eliminado->delete();
+        $eliminado->estado = 'inactivo';
+        $eliminado->save();
 
-        return redirect()->route('equipo.index')->with('success', 'Equipo eliminado correctamente.');
+        return redirect()->route('equipo.index')->with('success', 'Equipo inactivado correctamente.');
     }
 
 }

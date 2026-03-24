@@ -1,43 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Ciclista</title>
-</head>
-<body>
-    <h1>Editar Ciclista</h1>
+﻿@extends('layouts.app')
 
-    @if ($errors->any())
-        <div style="color:red;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+@section('title', 'Editar ciclista | Vuelta Ciclista Espana')
+@section('eyebrow', 'Edicion de ciclistas')
+@section('page_title', 'Actualizar ficha del ciclista')
+
+@section('content')
+    <section class="section-card">
+        <div class="section-toolbar">
+            <div>
+                <h2>Edicion de datos</h2>
+                <p>Revisa los valores actuales antes de guardar los cambios del ciclista.</p>
+            </div>
+            <a class="button-secondary" href="{{ route('ciclista.index') }}">Volver al listado</a>
         </div>
-    @endif
 
-    <form action="{{ route('ciclista.update', $ciclista->id_ciclistas) }}" method="POST">
-        @csrf
-        @method('PUT')
+        @if ($equipos->isEmpty())
+            <p class="empty-state">No hay equipos disponibles para reasignar este ciclista.</p>
+        @endif
 
-        <label>ID Equipo:</label><br>
-        <input type="number" name="id_equipo" value="{{ $ciclista->id_equipo }}" required><br><br>
+        @if ($nacionalidades->isEmpty())
+            <p class="empty-state">No hay nacionalidades disponibles en el catalogo.</p>
+        @endif
 
-        <label>Nombre:</label><br>
-        <input type="text" name="nombre" value="{{ $ciclista->nombre }}" required maxlength="50"><br><br>
+        <form action="{{ route('ciclista.update', $ciclista->id_ciclistas) }}" method="POST" class="form-grid">
+            @csrf
+            @method('PUT')
 
-        <label>Nacionalidad:</label><br>
-        <input type="text" name="nacionalidad" value="{{ $ciclista->nacionalidad }}" required maxlength="50"><br><br>
+            <div class="field">
+                <label for="id_equipo">Equipo</label>
+                <select class="input-control" id="id_equipo" name="id_equipo" required>
+                    <option value="">Selecciona un equipo</option>
+                    @foreach ($equipos as $equipo)
+                        <option value="{{ $equipo->id_equipo }}" @selected(old('id_equipo', $ciclista->id_equipo) == $equipo->id_equipo)>
+                            {{ $equipo->nombre }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-        <label>Fecha de Nacimiento:</label><br>
-        <input type="date" name="fecha_nacimiento" value="{{ $ciclista->fecha_nacimiento }}" required><br><br>
+            <div class="field">
+                <label for="nombre">Nombre</label>
+                <input class="input-control" id="nombre" type="text" name="nombre" value="{{ old('nombre', $ciclista->nombre) }}" maxlength="50" required>
+            </div>
 
-        <button type="submit">Actualizar</button>
-    </form>
+            <div class="field">
+                <label for="id_nacionalidad">Nacionalidad</label>
+                <select class="input-control" id="id_nacionalidad" name="id_nacionalidad" required>
+                    <option value="">Selecciona una nacionalidad</option>
+                    @foreach ($nacionalidades as $nacionalidad)
+                        <option value="{{ $nacionalidad->id_nacionalidad }}" @selected(old('id_nacionalidad', $ciclista->id_nacionalidad) == $nacionalidad->id_nacionalidad)>
+                            {{ $nacionalidad->nombre }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-    <br>
-    <a href="{{ route('ciclista.index') }}">Volver a la lista</a>
-</body>
-</html>
+            <div class="field">
+                <label for="fecha_nacimiento">Fecha de nacimiento</label>
+                <input class="input-control" id="fecha_nacimiento" type="date" name="fecha_nacimiento" value="{{ old('fecha_nacimiento', $ciclista->fecha_nacimiento) }}" required>
+            </div>
+
+            <div class="field">
+                <label for="fecha_inicio_contrato">Fecha de inicio contrato</label>
+                <input class="input-control" id="fecha_inicio_contrato" type="date" name="fecha_inicio_contrato" value="{{ old('fecha_inicio_contrato', $ciclista->fecha_inicio_contrato) }}" required>
+            </div>
+
+            <div class="field">
+                <label for="fecha_fin_contrato">Fecha final contrato</label>
+                <input class="input-control" id="fecha_fin_contrato" type="date" name="fecha_fin_contrato" value="{{ old('fecha_fin_contrato', $ciclista->fecha_fin_contrato) }}" required>
+            </div>
+
+            <div class="field">
+                <label for="estado_contrato">Estado contrato</label>
+                <select class="input-control" id="estado_contrato" name="estado_contrato" required>
+                    <option value="activo" @selected(old('estado_contrato', $ciclista->estado_contrato) === 'activo')>Activo</option>
+                    <option value="inactivo" @selected(old('estado_contrato', $ciclista->estado_contrato) === 'inactivo')>Inactivo</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label for="estado">Estado</label>
+                <select class="input-control" id="estado" name="estado" required>
+                    <option value="activo" @selected(old('estado', $ciclista->estado) === 'activo')>Activo</option>
+                    <option value="inactivo" @selected(old('estado', $ciclista->estado) === 'inactivo')>Inactivo</option>
+                </select>
+            </div>
+
+            <div class="field field-full">
+                <div class="form-actions">
+                    <a class="button-secondary" href="{{ route('ciclista.index') }}">Cancelar</a>
+                    <button class="button-primary" type="submit" @disabled($equipos->isEmpty() || $nacionalidades->isEmpty())>Guardar cambios</button>
+                </div>
+            </div>
+        </form>
+    </section>
+@endsection

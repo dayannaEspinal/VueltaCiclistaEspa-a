@@ -1,19 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalle Equipo</title>
-</head>
-<body>
-    <h1>Detalle Equipo</h1>
+﻿@extends('layouts.app')
 
-    <p><strong>ID:</strong> {{ $equipo->id_equipo }}</p>
-    <p><strong>Nombre:</strong> {{ $equipo->nombre }}</p>
-    <p><strong>Director:</strong> {{ $equipo->director }}</p>
-    <p><strong>Nacionalidad:</strong> {{ $equipo->nacionalidad }}</p>
+@section('title', 'Detalle del equipo | Vuelta Ciclista Espana')
+@section('eyebrow', 'Ficha de equipo')
+@section('page_title', 'Detalle de la escuadra')
 
-    <a href="{{ route('equipo.edit', $equipo->id_equipo) }}">Editar</a>
-    <a href="{{ route('equipo.index') }}">Volver a la lista</a>
-</body>
-</html>
+@section('content')
+    <section class="detail-grid">
+        <article class="detail-card">
+            <div>
+                <h2 class="detail-title">{{ $equipo->nombre }}</h2>
+                <p class="detail-subtitle">Vista de detalle del equipo seleccionado.</p>
+            </div>
+
+            <div class="detail-list">
+                <div class="detail-item">
+                    <span>ID</span>
+                    <strong>{{ $equipo->id_equipo }}</strong>
+                </div>
+                <div class="detail-item">
+                    <span>Director</span>
+                    <strong>{{ $equipo->director }}</strong>
+                </div>
+                <div class="detail-item">
+                    <span>Nacionalidad</span>
+                    <strong>{{ $equipo->nacionalidad?->nombre ?? 'Sin nacionalidad' }}</strong>
+                </div>
+                <div class="detail-item">
+                    <span>Estado</span>
+                    <strong>{{ ucfirst($equipo->estado) }}</strong>
+                </div>
+            </div>
+        </article>
+
+        <aside class="detail-card">
+            <div>
+                <h2 class="detail-title">Acciones rapidas</h2>
+                <p class="detail-subtitle">Edita el equipo, vuelve al listado o elimina el registro actual.</p>
+            </div>
+
+            <div class="form-actions">
+                <a class="button-primary" href="{{ route('equipo.edit', $equipo->id_equipo) }}">Editar equipo</a>
+                <a class="button-secondary" href="{{ route('equipo.index') }}">Volver al listado</a>
+            </div>
+
+            <form action="{{ route('equipo.destroy', $equipo->id_equipo) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button class="button-danger" type="submit" @disabled($equipo->estado === 'inactivo')>Inactivar registro</button>
+            </form>
+        </aside>
+    </section>
+
+    <section class="section-card section-spaced">
+        <div class="section-toolbar">
+            <div>
+                <h2>Integrantes del equipo</h2>
+                <p>Listado de ciclistas asignados actualmente a este equipo.</p>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Nacionalidad</th>
+                        <th>Inicio contrato</th>
+                        <th>Fin contrato</th>
+                        <th>Estado contrato</th>
+                        <th>Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($equipo->ciclistas as $integrante)
+                        <tr>
+                            <td>{{ $integrante->id_ciclistas }}</td>
+                            <td>{{ $integrante->nombre }}</td>
+                            <td>{{ $integrante->nacionalidad?->nombre ?? 'Sin nacionalidad' }}</td>
+                            <td>{{ $integrante->fecha_inicio_contrato }}</td>
+                            <td>{{ $integrante->fecha_fin_contrato }}</td>
+                            <td>{{ ucfirst($integrante->estado_contrato) }}</td>
+                            <td>{{ ucfirst($integrante->estado) }}</td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7">
+                                <p class="empty-state">Este equipo todavia no tiene ciclistas asignados.</p>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </section>
+@endsection

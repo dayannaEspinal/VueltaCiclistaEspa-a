@@ -1,57 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista Pruebas</title>
-</head>
-<body>
-    <h1>Lista Pruebas</h1>
+﻿@extends('layouts.app')
 
-    @if(session('success'))
-        <div>{{ session('success') }}</div>
-    @endif
-    @if(session('error'))
-        <div>{{ session('error') }}</div>
-    @endif
+@section('title', 'Pruebas | Vuelta Ciclista Espana')
+@section('eyebrow', 'Modulo de pruebas')
+@section('page_title', 'Calendario y resultados')
 
-    <a href="{{ route('prueba.create') }}">Crear Prueba</a>
+@section('content')
+    <section class="section-card">
+        <div class="section-toolbar">
+            <div>
+                <h2>Listado de pruebas</h2>
+                <p>Visualiza la informacion clave de cada prueba y accede rapidamente a sus acciones.</p>
+            </div>
+            <div class="form-actions">
+                <a class="button-secondary" href="{{ route('ganador.index') }}">Gestionar ganadores</a>
+                <a class="button-primary" href="{{ route('prueba.create') }}">Nueva prueba</a>
+            </div>
+        </div>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Ciclista Ganador</th>
-                <th>Clasificación Final</th>
-                <th>Numero de Etapas</th>
-                <th>Año Edición</th>
-                <th>Km Totales</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($pruebas as $prueba)
-                <tr>
-                    <td>{{ $prueba->id }}</td>
-                    <td>{{ $prueba->nombre }}</td>
-                    <td>{{ $prueba->ciclista_ganador }}</td>
-                    <td>{{ $prueba->clasificacion_final }}</td>
-                    <td>{{ $prueba->numero_etapas }}</td>
-                    <td>{{ $prueba->anio_edicion }}</td>
-                    <td>{{ $prueba->km_totales }}</td>
-                    <td>
-                        <a href="{{ route('prueba.show', $prueba->id) }}">Ver</a> |
-                        <a href="{{ route('prueba.edit', $prueba->id) }}">Editar</a> |
-                        <form action="{{ route('prueba.destroy', $prueba->id) }}" method="POST" style="display:inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-</body>
-</html>
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Etapas</th>
+                        <th>Edicion</th>
+                        <th>Km totales</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($pruebas as $prueba)
+                        <tr>
+                            <td>{{ $prueba->id }}</td>
+                            <td>{{ $prueba->nombre }}</td>
+                            <td>{{ $prueba->numero_etapas }}</td>
+                            <td>{{ $prueba->anio_edicion }}</td>
+                            <td>{{ $prueba->km_totales }}</td>
+                            <td>{{ ucfirst($prueba->estado) }}</td>
+                            <td>
+                                <div class="action-row">
+                                    <a class="button-link" href="{{ route('prueba.show', $prueba->id) }}">Ver</a>
+                                    <a class="button-secondary" href="{{ route('prueba.edit', $prueba->id) }}">Editar</a>
+                                    <a class="button-secondary" href="{{ route('ganador.create', ['id_prueba' => $prueba->id]) }}">Asignar ganador</a>
+                                    <form action="{{ route('prueba.destroy', $prueba->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="button-danger" type="submit">Eliminar</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7">
+                                <p class="empty-state">No hay pruebas registradas todavia.</p>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </section>
+@endsection

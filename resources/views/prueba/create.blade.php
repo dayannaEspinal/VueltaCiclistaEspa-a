@@ -1,47 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Prueba</title>
-</head>
-<body>
-    <h1>Crear Prueba</h1>
+﻿@extends('layouts.app')
 
-    @if ($errors->any())
-        <div style="color:red;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+@section('title', 'Crear prueba | Vuelta Ciclista Espana')
+@section('eyebrow', 'Alta de pruebas')
+@section('page_title', 'Registrar nueva prueba')
+
+@section('content')
+    <section class="section-card">
+        <div class="section-toolbar">
+            <div>
+                <h2>Formulario de alta</h2>
+                <p>Todos los datos clave de la prueba quedan organizados en un unico formulario responsive.</p>
+            </div>
+            <div class="form-actions">
+                <a class="button-secondary" href="{{ route('ganador.index') }}">Modulo de ganador</a>
+                <a class="button-secondary" href="{{ route('prueba.index') }}">Volver al listado</a>
+            </div>
         </div>
-    @endif
 
-    <form action="{{ route('prueba.store') }}" method="POST">
-        @csrf
-        <label>Nombre:</label><br>
-        <input type="text" name="nombre" required maxlength="50"><br><br>
+        <form action="{{ route('prueba.store') }}" method="POST" class="form-grid">
+            @csrf
 
-        <label>Ciclista Ganador:</label><br>
-        <input type="text" name="ciclista_ganador" required maxlength="50"><br><br>
+            <div class="field field-full">
+                <label for="nombre">Nombre</label>
+                <input class="input-control" id="nombre" type="text" name="nombre" value="{{ old('nombre') }}" maxlength="50" required>
+            </div>
 
-        <label>Clasificación Final:</label><br>
-        <input type="text" name="clasificacion_final" required maxlength="50"><br><br>
+            <div class="field">
+                <label for="numero_etapas">Numero de etapas</label>
+                <input class="input-control" id="numero_etapas" type="number" name="numero_etapas" value="{{ old('numero_etapas') }}" required>
+            </div>
 
-        <label>Numero de Etapas:</label><br>
-        <input type="number" name="numero_etapas" required><br><br>
+            <div class="field">
+                <label for="anio_edicion">Ano de edicion</label>
+                <input class="input-control" id="anio_edicion" type="number" name="anio_edicion" value="{{ old('anio_edicion') }}" required>
+            </div>
 
-        <label>Año Edición:</label><br>
-        <input type="number" name="anio_edicion" required><br><br>
+            <div class="field field-full">
+                <label for="km_totales">Kilometros totales</label>
+                <input class="input-control" id="km_totales" type="number" name="km_totales" value="{{ old('km_totales') }}" required>
+            </div>
 
-        <label>Kilómetros Totales:</label><br>
-        <input type="number" name="km_totales" required><br><br>
+            <div class="field field-full">
+                <label for="estado">Estado</label>
+                <select class="input-control" id="estado" name="estado" required>
+                    <option value="activo" @selected(old('estado', 'activo') === 'activo')>Activo</option>
+                    <option value="inactivo" @selected(old('estado') === 'inactivo')>Inactivo</option>
+                </select>
+            </div>
 
-        <button type="submit">Guardar</button>
-    </form>
-
-    <br>
-    <a href="{{ route('prueba.index') }}">Volver a la lista</a>
-</body>
-</html>
+            <div class="field field-full">
+                <div class="form-actions">
+                    <a class="button-secondary" href="{{ route('prueba.index') }}">Cancelar</a>
+                    <button class="button-primary" type="submit">Guardar prueba</button>
+                </div>
+            </div>
+        </form>
+    </section>
+@endsection
